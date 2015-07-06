@@ -83,12 +83,12 @@ As classes geradas nunca devem ser editadas manualmente.</p>
 <p>Porem torna a aplicação mais flexível.</p>
 
 <p>Na maioria das vezes você mantenha os metadados em um formato de arquivo separado.
-Atualmente XML é uma escolha popular, pois proporciona estruturação hierárquica, libertando-o de escrever seus próprios analisadores e outras ferramentas.
-U
-m dos desafios dos metadados é que existem casos onde terá que ser adicionado uma grande complexidade de metadados, uma alternativa útil é sobrescrever o código genérico .</p>
+Atualmente XML é uma escolha popular, pois proporciona estruturação hierárquica, libertando-o de escrever seus próprios analisadores e outras ferramentas.</p>
+
+<p>Um dos desafios dos metadados é que existem casos onde terá que ser adicionado uma grande complexidade de metadados, uma alternativa útil é sobrescrever o código genérico .</p>
 
 <h2>
-<a id="quando-usá-lo" class="anchor" href="#quando-us%C3%A1-lo" aria-hidden="true"><span class="octicon octicon-link"></span></a>Quando Usá-lo:</h2>
+<a id="quando-usar" class="anchor" href="#quando-usar" aria-hidden="true"><span class="octicon octicon-link"></span></a>Quando Usar:</h2>
 
 <p>Esse padrão reduz muito a quantidade de trabalho para tratar o mapeamento em um banco de dados, mas o trabalho de configuração é requerido para preparar o framework. O mapeamento em metadados pode interferir na refatoração, mas por outro lado pode tornar a refatoração no banco de dados mais fácil, já que os metadados representam uma declaração na interface.</p>
 
@@ -103,7 +103,7 @@ m dos desafios dos metadados é que existem casos onde terá que ser adicionado 
 <a id="query-object-objeto-de-pesquisa" class="anchor" href="#query-object-objeto-de-pesquisa" aria-hidden="true"><span class="octicon octicon-link"></span></a>Query Object (Objeto de Pesquisa)</h1>
 
 <h2>
-<a id="como-funciona-1" class="anchor" href="#como-funciona-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Como funciona:</h2>
+<a id="como-funciona-1" class="anchor" href="#como-funciona-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Como Funciona:</h2>
 
 <p>Um objeto de pesquisa é um interpretador, pode-se criar a consulta fazendo referência a classes e a campos em vez de tabelas e colunas. É uma aplicação do padrão Interpretador destinado a representar uma consulta SQL.
 Suas principais tarefas são:</p>
@@ -130,7 +130,7 @@ Outra abordagem é para detectar consultas que são casos particulares de outras
 </ul>
 
 <h2>
-<a id="quando-usar" class="anchor" href="#quando-usar" aria-hidden="true"><span class="octicon octicon-link"></span></a>Quando Usar:</h2>
+<a id="quando-usar-1" class="anchor" href="#quando-usar-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Quando Usar:</h2>
 
 <p>É um padrão bastante sofisticado para se construir, portanto a maioria dos projetos não usa.
  Vantagens desse padrão: </p>
@@ -170,7 +170,7 @@ O repositório combina o Mapeamento em metadados com objeto de pesquisa, para ge
 <p>Sua utilização pode melhorar a legibilidade e a clareza em um código que faz uso extensivo de consultas.</p>
 
 <h2>
-<a id="quando-usar-1" class="anchor" href="#quando-usar-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Quando Usar:</h2>
+<a id="quando-usar-2" class="anchor" href="#quando-usar-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Quando Usar:</h2>
 
 <p>Em sistemas grandes com muitos tipos de objetos de domínio e muitas pesquisas possíveis esse padrão reduz a quantidade o código necessário.</p>
 
