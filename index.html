@@ -39,9 +39,10 @@
 
 <ul>
 <li>Enfadonho</li>
-<li>Repetitivo.
-Um mapeamento de metadados permite aos programadores definir os mapeamentos de uma forma simples, que então é processado pelo código genérico para realizar a leitura, inserção, e a atualização dos dados. </li>
+<li>Repetitivo.</li>
 </ul>
+
+<p>Um mapeamento de metadados permite aos programadores definir os mapeamentos de uma forma simples, que então é processado pelo código genérico para realizar a leitura, inserção, e a atualização dos dados. </p>
 
 <h2>
 <a id="como-funciona" class="anchor" href="#como-funciona" aria-hidden="true"><span class="octicon octicon-link"></span></a>Como Funciona:</h2>
@@ -49,16 +50,17 @@ Um mapeamento de metadados permite aos programadores definir os mapeamentos de u
 <p>A maior decisão em usar Metadados Mapeamento é a forma como as informações nos metadados se manifesta em termos de execução de código. Existem duas principais rotas a tomar:</p>
 
 <ul>
-<li>Geração de código;</li>
-<li>Programação reflexiva;</li>
+<li>Geração de código.</li>
+<li>Programação reflexiva.</li>
 </ul>
 
 <h3>
 <a id="geração-de-código" class="anchor" href="#gera%C3%A7%C3%A3o-de-c%C3%B3digo" aria-hidden="true"><span class="octicon octicon-link"></span></a>Geração de Código:</h3>
 
 <p>A aplicação recebe como entrada metadados e cuja saída é o código-fonte das classes que fazem o mapeamento. 
-As classes geradas nunca devem ser editadas manualmente.
-Menos dinâmico: </p>
+As classes geradas nunca devem ser editadas manualmente.</p>
+
+<p>Menos dinâmico: </p>
 
 <ul>
 <li>Quaisquer alterações no mapeamento requerem recompilação e redistribuição.</li>
@@ -67,19 +69,23 @@ Menos dinâmico: </p>
 <h3>
 <a id="programação-reflexiva" class="anchor" href="#programa%C3%A7%C3%A3o-reflexiva" aria-hidden="true"><span class="octicon octicon-link"></span></a>Programação Reflexiva:</h3>
 
-<p>Trata os métodos (e campos) como dados.
-O programa reflexivo pode ler o nome do campo ou do método em um arquivo de metadados e usá-los para realizar o mapeamento.
-É desencorajado de se usar programação reflexiva pois:</p>
+<p>Trata os métodos (e campos) como dados.</p>
+
+<p>O programa reflexivo pode ler o nome do campo ou do método em um arquivo de metadados e usá-los para realizar o mapeamento.</p>
+
+<p>É desencorajado de se usar programação reflexiva pois:</p>
 
 <ul>
-<li>Lento;</li>
-<li>Difícil depuração
-Porem torna a aplicação mais flexível.</li>
+<li>Lento.</li>
+<li>Difícil depuração.</li>
 </ul>
+
+<p>Porem torna a aplicação mais flexível.</p>
 
 <p>Na maioria das vezes você mantenha os metadados em um formato de arquivo separado.
 Atualmente XML é uma escolha popular, pois proporciona estruturação hierárquica, libertando-o de escrever seus próprios analisadores e outras ferramentas.
-Um dos desafios dos metadados é que existem casos onde terá que ser adicionado uma grande complexidade de metadados, uma alternativa útil é sobrescrever o código genérico .</p>
+U
+m dos desafios dos metadados é que existem casos onde terá que ser adicionado uma grande complexidade de metadados, uma alternativa útil é sobrescrever o código genérico .</p>
 
 <h2>
 <a id="quando-usá-lo" class="anchor" href="#quando-us%C3%A1-lo" aria-hidden="true"><span class="octicon octicon-link"></span></a>Quando Usá-lo:</h2>
@@ -107,19 +113,20 @@ Suas principais tarefas são:</p>
 <li>Transformar estruturas em objetos na string SQL. </li>
 </ul>
 
-<p>Pode representar consultas na linguagem dos objetos na memória em vez da linguagem do esquema do banco de dados</p>
+<p>Pode representar consultas na linguagem dos objetos na memória em vez da linguagem do esquema do banco de dados,</p>
 
 <ul>
-<li>ou seja, usar nomes de objetos e campos em vez de usar nomes de tabelas e colunas.
-Para efetuar essa mudança o objeto de pesquisa precisa saber como está a estrutura do banco de dados, essa é uma habilidade que precisa de do Mapeamento de Metadados.</li>
+<li>ou seja, usar nomes de objetos e campos em vez de usar nomes de tabelas e colunas.</li>
 </ul>
+
+<p>Para efetuar essa mudança o objeto de pesquisa precisa saber como está a estrutura do banco de dados, essa é uma habilidade que precisa de do Mapeamento de Metadados.</p>
 
 <p>Um uso do Objeto de pesquisa elimina pesquisas redundantes.</p>
 
 <ul>
-<li>Se a consulta já foi vista basta consultar os objetos do Mapa de identidade, evitando assim uma ida ao banco de dados.
-Outra abordagem é para detectar consultas que são casos particulares de outras.
-Uma variação permite que uma consulta seja especificada por um exemplo de objeto de domínio. Assim poderia ter um objeto com apenas um campo preenchido, o restante seria nulo.</li>
+<li><p>Se a consulta já foi vista basta consultar os objetos do Mapa de identidade, evitando assim uma ida ao banco de dados.
+Outra abordagem é para detectar consultas que são casos particulares de outras.</p></li>
+<li><p>Uma variação permite que uma consulta seja especificada por um exemplo de objeto de domínio. Assim poderia ter um objeto com apenas um campo preenchido, o restante seria nulo.</p></li>
 </ul>
 
 <h2>
@@ -149,19 +156,25 @@ Uma variação permite que uma consulta seja especificada por um exemplo de obje
 <a id="como-funciona-2" class="anchor" href="#como-funciona-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Como Funciona:</h2>
 
 <p>Ele é uma junção de outros padrões, ele se parece com um pequeno banco de dados orientado a objetos.
-Existe um objeto repositório que “simula” um banco de dados. 
-Assim aplicação cliente não acesso a fonte de dados real, que pode ser um simples banco de dados relacional ou um fluxo XML, ou ainda a combinação de muitos bancos, no entanto ela acessa ao repositório através de métodos que recebem como parâmetros critérios usados para procurar objetos específicos que pertençam ao repositório. 
-Podemos dizer que o repositório é uma grande coleção de dados e permite ao cliente procurar por objetos e não se preocupar com SQL. 
-Para encontrar um objeto o cliente deve especificar os critérios de busca, tendo feito isso acontece a busca no repositório usando as informações que foram passadas, para então retornar uma lista de objetos ou um objeto do domínio que possa representar as informações que foram solicitadas.
-O código de um repositório se parece com uma coleção de objetos do domínio em memória. 
-O repositório combina o Mapeamento em metadados com objeto de pesquisa, para gerar automaticamente o codigo SQL a partir dos critérios que foram passados.
- Sua utilização pode melhorar a legibilidade e a clareza em um código que faz uso extensivo de consultas.</p>
+Existe um objeto repositório que “simula” um banco de dados. </p>
+
+<p>Assim aplicação cliente não acesso a fonte de dados real, que pode ser um simples banco de dados relacional ou um fluxo XML, ou ainda a combinação de muitos bancos, no entanto ela acessa ao repositório através de métodos que recebem como parâmetros critérios usados para procurar objetos específicos que pertençam ao repositório. </p>
+
+<p>Podemos dizer que o repositório é uma grande coleção de dados e permite ao cliente procurar por objetos e não se preocupar com SQL. </p>
+
+<p>Para encontrar um objeto o cliente deve especificar os critérios de busca, tendo feito isso acontece a busca no repositório usando as informações que foram passadas, para então retornar uma lista de objetos ou um objeto do domínio que possa representar as informações que foram solicitadas.</p>
+
+<p>O código de um repositório se parece com uma coleção de objetos do domínio em memória. 
+O repositório combina o Mapeamento em metadados com objeto de pesquisa, para gerar automaticamente o codigo SQL a partir dos critérios que foram passados.</p>
+
+<p>Sua utilização pode melhorar a legibilidade e a clareza em um código que faz uso extensivo de consultas.</p>
 
 <h2>
 <a id="quando-usar-1" class="anchor" href="#quando-usar-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Quando Usar:</h2>
 
-<p>Em sistemas grandes com muitos tipos de objetos de domínio e muitas pesquisas possíveis esse padrão reduz a quantidade o código necessário.
-Promove o padrão Especificação, que encapsula a consulta a ser realizada de uma forma puramente orientada a objeto.</p>
+<p>Em sistemas grandes com muitos tipos de objetos de domínio e muitas pesquisas possíveis esse padrão reduz a quantidade o código necessário.</p>
+
+<p>Promove o padrão Especificação, que encapsula a consulta a ser realizada de uma forma puramente orientada a objeto.</p>
 
 <h2>
 <a id="exemplo-2" class="anchor" href="#exemplo-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Exemplo:</h2>
