@@ -508,9 +508,64 @@ Outra abordagem é para detectar consultas que são casos particulares de outras
 <h2>
 <a id="exemplo-1" class="anchor" href="#exemplo-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Exemplo:</h2>
 
-<p>`</p>
+<p>public class Criteria {</p>
 
-<p>`</p>
+<pre><code>private String sqlOperator;
+protected String field;
+protected Object value;
+
+public static Criteria greaterThan(String fieldName, int value) {
+    return Criteria.greaterThan(fieldName, new Integer(value));
+}
+
+public static Criteria greaterThan(String fieldName, Object value) {
+    return new Criteria(" &gt; ", fieldName, value);
+}
+
+private Criteria(String sql, String field, Object value) {
+    this.sqlOperator = sql;
+    this.field = field;
+    this.value = value;
+}
+
+public String generateSql(DataMap dataMap) throws Exception {
+    return dataMap.getColumnForField(field) + sqlOperator + value;
+}
+</code></pre>
+
+<p>}</p>
+
+<p><code>public class QueryObject {</code></p>
+
+<pre><code>`private Mapper mapper;`
+`private List criteria = new ArrayList();`
+
+`public Set execute(DataMap dataMap) {`
+    `try {`
+        `return mapper.findObjectsWhere(generateWhereClause(dataMap));`
+    `} catch (Exception ex) {`
+        `Logger.getLogger(QueryObject.class.getName()).log(Level.SEVERE, null, ex);`
+    `}`
+    `return null;`
+`}`
+
+`private String generateWhereClause(DataMap dataMap) throws Exception {`
+    `StringBuffer result = new StringBuffer();`
+
+    `for (Iterator it = criteria.iterator(); it.hasNext();) {`
+        `Criteria c = (Criteria) it.next();`
+
+        `if (result.length() != 0) {`
+            `result.append(" AND ");`
+        `}`
+
+        `result.append(c.generateSql(dataMap));`
+    `}`
+    `return result.toString();`
+`}`
+</code></pre>
+
+<p><code>}</code></p>
 
 <h1>
 <a id="repository-repositório" class="anchor" href="#repository-reposit%C3%B3rio" aria-hidden="true"><span class="octicon octicon-link"></span></a>Repository (Repositório)</h1>
