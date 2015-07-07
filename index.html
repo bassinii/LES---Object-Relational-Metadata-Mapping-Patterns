@@ -597,9 +597,47 @@ O repositório combina o Mapeamento em metadados com objeto de pesquisa, para ge
 <h2>
 <a id="exemplo-2" class="anchor" href="#exemplo-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Exemplo:</h2>
 
-<p>`</p>
+<p>Da perspectiva do objeto cliente, usando um repositório é simples. Para recuperar seus dependentes a partir do banco de dados de um objeto pessoa cria um critério de objeto que representa os critérios de pesquisa para ser combinados e envia para o repositório apropriado.</p>
 
-<p>`</p>
+<p><code>public class Person {</code></p>
+
+<pre><code>`public List dependents() {`
+
+    `Repository repository = Registry.personRepository();`
+    `Criteria criteria = new Criteria();`
+    `criteria.equal(Person.BENEFACTOR, this);`
+
+    `return repository.matching(criteria);`
+`}`
+</code></pre>
+
+<p><code>}</code></p>
+
+<p>Consultas comuns podem ser acomodados com subclasses especializadas de Repository. No exemplo anterior, poderíamos fazer uma subclasse PersonRepository de Repositório e mover a criação de critérios de pesquisa no próprio repositório.</p>
+
+<p><code>public class PersonRepository extends Repository {</code></p>
+
+<pre><code>`public List dependentsOf(aPerson) {`
+
+    `Criteria criteria = new Criteria();`
+    `criteria.equal(Person.BENEFACTOR, aPerson);`
+    `return matching(criteria);`
+`}`
+</code></pre>
+
+<p><code>}</code></p>
+
+<p>O objeto pessoa em seguida, chama os dependents() método diretamente em seu repositório.</p>
+
+<p><code>public class Person {</code></p>
+
+<pre><code>`public List dependents() {`
+    `return Registry.personRepository().dependentsOf(this);`
+
+`}`
+</code></pre>
+
+<p><code>}</code></p>
         </section>
 
         <aside id="sidebar">
