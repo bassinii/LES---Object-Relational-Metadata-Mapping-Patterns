@@ -243,14 +243,10 @@ Atualmente XML é uma escolha popular, pois proporciona estruturação hierárqu
     `PreparedStatement stmt = null;`
     `ResultSet rs = null;`
     `DomainObject result = null;`
-</code></pre>
 
-<p><code>//        if (uow.isLoaded(key)) {</code>
-<code>//            return uow.getObject(key);</code>
-<code>//        }</code>
-        <code>String sql = "SELECT " + dataMap.columnList() + " FROM " + dataMap.getTableName() + " WHERE ID = ? ";</code></p>
+    `String sql = "SELECT " + dataMap.columnList() + " FROM " + dataMap.getTableName() + " WHERE ID = ? ";`
 
-<pre><code>    `try {`
+    `try {`
 
         `stmt = DB.prepare(sql);`
         `stmt.setLong(1, key.longValue());`
@@ -271,14 +267,8 @@ Atualmente XML é uma escolha popular, pois proporciona estruturação hierárqu
 `public DomainObject load(ResultSet rs) throws Exception {`
 
     `Long key = new Long(rs.getLong("ID"));`
-</code></pre>
 
-<p><code>//</code>
-<code>//        if (uow.isLoaded(key)) {</code>
-<code>//            return uow.getObject(key);</code>
-<code>//        }</code></p>
-
-<pre><code>    `DomainObject result =  (DomainObject)dataMap.getDomainClass().newInstance();`
+    `DomainObject result =  (DomainObject)dataMap.getDomainClass().newInstance();`
 
     `result.setID(key);`
 
@@ -465,6 +455,10 @@ Atualmente XML é uma escolha popular, pois proporciona estruturação hierárqu
 <h1>
 <a id="query-object-objeto-de-pesquisa" class="anchor" href="#query-object-objeto-de-pesquisa" aria-hidden="true"><span class="octicon octicon-link"></span></a>Query Object (Objeto de Pesquisa)</h1>
 
+<p>Um objeto que representa uma consulta de banco de dados.</p>
+
+<p><img src="http://martinfowler.com/eaaCatalog/queryObjectSketch.gif" alt=""></p>
+
 <h2>
 <a id="como-funciona-1" class="anchor" href="#como-funciona-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Como Funciona:</h2>
 
@@ -569,6 +563,8 @@ public String generateSql(DataMap dataMap) throws Exception {
 
 <h1>
 <a id="repository-repositório" class="anchor" href="#repository-reposit%C3%B3rio" aria-hidden="true"><span class="octicon octicon-link"></span></a>Repository (Repositório)</h1>
+
+<p><img src="http://i.stack.imgur.com/IjgeZ.gif" alt=""></p>
 
 <h2>
 <a id="como-funciona-2" class="anchor" href="#como-funciona-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Como Funciona:</h2>
