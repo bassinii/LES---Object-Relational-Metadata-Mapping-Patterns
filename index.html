@@ -95,9 +95,372 @@ Atualmente XML é uma escolha popular, pois proporciona estruturação hierárqu
 <h2>
 <a id="exemplo" class="anchor" href="#exemplo" aria-hidden="true"><span class="octicon octicon-link"></span></a>Exemplo:</h2>
 
-<p>`</p>
+<p><code>public class DomainObject {</code></p>
 
-<p>`</p>
+<pre><code>`private Long ID;`
+
+`public DomainObject() {}`
+
+`public DomainObject(Long ID) {`
+    `this.ID = ID;`
+`}`
+</code></pre>
+
+<p><code>}</code></p>
+
+<p><code>public class Person  extends DomainObject{</code></p>
+
+<pre><code>`private String lastname;`
+`private String firstname;`
+`private int numberOfDependents;`
+</code></pre>
+
+<p><code>}</code></p>
+
+<p><code>public class DataMap {</code></p>
+
+<pre><code>`private Class domainClass;`
+`private String tableName;`
+`private List columnMaps = new ArrayList();`
+
+`DataMap(Class&lt;Person&gt; aClass, String tableName) {`
+    `this.domainClass = aClass;`
+    `this.tableName = tableName;`
+
+`}`
+
+`public String columnList() {`
+    `StringBuffer result = new StringBuffer("   ID");`
+
+    `for (Iterator it = columnMaps.iterator(); it.hasNext();) {`
+        `result.append(",");`
+
+        `ColumnMap columnMap = (ColumnMap) it.next();`
+        `result.append(columnMap.getColumnName());`
+
+    `}`
+    `return result.toString();`
+
+`}`
+
+`public String insertList() {`
+
+    `StringBuffer result = new StringBuffer();`
+    `for (int i = 0; i &lt; columnMaps.size(); i++) {`
+
+        `result.append(",");`
+        `result.append("?");`
+    `}`
+
+    `return result.toString();`
+`}`
+
+`public String updateList() {`
+
+    `StringBuffer result = new StringBuffer(" SET ");`
+
+    `for (Iterator it = columnMaps.iterator(); it.hasNext();) {`
+        `ColumnMap columnMap = (ColumnMap) it.next();`
+        `result.append(columnMap.getColumnName());`
+        `result.append("=?,");`
+
+    `}`
+
+    `result.setLength(result.length() - 1);`
+    `return result.toString();`
+
+`}`
+
+`public Iterator getColumns() {`
+    `return Collections.unmodifiableCollection(columnMaps).iterator();`
+`}`
+
+`void addColumn(String lastname, String varchar, String lastName) {`
+    `ColumnMap coluna = new ColumnMap(columnName, fieldName, this);`
+    `this.columnMaps.add(coluna);`
+`}`
+</code></pre>
+
+<p><code>}</code></p>
+
+<p><code>public class ColumnMap {</code></p>
+
+<pre><code>`private String columnName;`
+`private String fieldName;`
+`private Field field;`
+`private DataMap dataMap;`
+
+
+`public ColumnMap(String columnName, String fieldName, DataMap dataMap) throws Exception {`
+    `this.columnName = columnName;`
+    `this.fieldName = fieldName;`
+    `this.dataMap = dataMap;`
+    `initField();`
+
+`}`
+
+`private void initField() throws Exception {`
+    `try {`
+
+        `field = dataMap.getClass().getDeclaredField(getFieldName());`
+        `field.setAccessible(true);`
+
+    `} catch (Exception e) {`
+        `throw new Exception("unable    to set up field: " + fieldName, e);`
+    `}`
+`}`
+
+`public void setField(Object result, Object columnValue) throws Exception {`
+    `try {`
+        `field.set(result, columnValue);`
+
+    `} catch (Exception e) {`
+        `throw new Exception("Error in setting " + fieldName, e);`
+    `}`
+
+`}`
+
+`public Object getValue(Object subject) throws Exception {`
+    `try {`
+
+        `return field.get(subject);`
+    `} catch (Exception e) {`
+
+        `throw new Exception(e);`
+    `}`
+`}`
+</code></pre>
+
+<p><code>}</code></p>
+
+<p><code>public class Mapper {</code></p>
+
+<pre><code>`//private UnitOfWork uow;`
+`protected DataMap dataMap;`
+
+`public Object findObject(Long key) {`
+
+    `PreparedStatement stmt = null;`
+    `ResultSet rs = null;`
+    `DomainObject result = null;`
+</code></pre>
+
+<p><code>//        if (uow.isLoaded(key)) {</code>
+<code>//            return uow.getObject(key);</code>
+<code>//        }</code>
+        <code>String sql = "SELECT " + dataMap.columnList() + " FROM " + dataMap.getTableName() + " WHERE ID = ? ";</code></p>
+
+<pre><code>    `try {`
+
+        `stmt = DB.prepare(sql);`
+        `stmt.setLong(1, key.longValue());`
+        `rs = stmt.executeQuery();`
+        `rs.next();`
+
+        `result = load(rs);`
+
+    `} catch (Exception e) {`
+        `System.out.println("Erro:" +e.getLocalizedMessage());;`
+    `} finally {`
+        `DB.cleanUp(stmt, rs);`
+
+    `}`
+    `return result;`
+`}`
+
+`public DomainObject load(ResultSet rs) throws Exception {`
+
+    `Long key = new Long(rs.getLong("ID"));`
+</code></pre>
+
+<p><code>//</code>
+<code>//        if (uow.isLoaded(key)) {</code>
+<code>//            return uow.getObject(key);</code>
+<code>//        }</code></p>
+
+<pre><code>    `DomainObject result =  (DomainObject)dataMap.getDomainClass().newInstance();`
+
+    `result.setID(key);`
+
+    `//uow.registerClean(result);`
+    `loadFields(rs, result);`
+    `return result;`
+
+`}`
+
+`private void loadFields(ResultSet rs, DomainObject result) throws Exception {`
+    `for (Iterator it = dataMap.getColumns(); it.hasNext();) {`
+
+        `ColumnMap columnMap = (ColumnMap) it.next();`
+
+        `Object columnValue = rs.getObject(columnMap.getColumnName());`
+        `columnMap.setField(result, columnValue);`
+
+    `}`
+
+`}`
+
+`public void update(DomainObject obj) {`
+    `String sql = "UPDATE   " + dataMap.getTableName() + dataMap.updateList() + " WHERE ID = ? ";`
+
+    `PreparedStatement stmt = null;`
+    `try {`
+
+        `stmt = DB.prepare(sql);`
+        `int argCount = 1;`
+
+        `for (Iterator it = dataMap.getColumns(); it.hasNext();) {`
+            `ColumnMap col = (ColumnMap) it.next();`
+            `stmt.setObject(argCount++, col.getValue(obj));`
+        `}`
+
+        `stmt.setLong(argCount, obj.getID().longValue());`
+        `stmt.executeUpdate();`
+    `} catch (Exception e) {`
+        `System.out.println("Erro: " + e.getMessage());`
+    `} finally {`
+        `DB.cleanUp(stmt);`
+
+    `}`
+`}`
+
+`public Long insert(DomainObject obj) {`
+
+    `String sql = "INSERT INTO " + dataMap.getTableName() + " VALUES (?" + dataMap.insertList() + ")";`
+    `PreparedStatement stmt = null;`
+    `try {`
+
+        `stmt = DB.prepare(sql);`
+        `stmt.setObject(1, obj.getID());`
+        `int argCount = 2;`
+
+        `for (Iterator it = dataMap.getColumns(); it.hasNext();) {`
+            `ColumnMap col = (ColumnMap) it.next();`
+            `stmt.setObject(argCount++, col.getValue(obj));`
+
+        `}`
+        `stmt.executeUpdate();`
+
+    `} catch (Exception e) {`
+        `System.out.println("Erro:" +e.getMessage());`
+    `} finally {`
+        `DB.cleanUp(stmt);`
+
+    `}`
+    `return obj.getID();`
+`}`
+
+
+
+`public Set findObjectsWhere(String whereClause) {`
+    `String sql  = "SELECT" + dataMap.columnList() + " FROM " + dataMap.getTableName() `
+                `+ " WHERE "+ whereClause;`
+    `PreparedStatement stmt = null;`
+    `ResultSet rs = null;`
+
+    `Set result = new HashSet();`
+    `try {`
+
+        `stmt = DB.prepare(sql);`
+        `rs = stmt.executeQuery();`
+        `result = loadAll(rs);`
+
+    `} catch (Exception e) {`
+
+        `System.out.println("erro: "+e.getLocalizedMessage());`
+    `} finally {`
+        `DB.cleanUp(stmt, rs);`
+
+    `}`
+    `return result;`
+
+`}`
+
+`public Set loadAll(ResultSet rs) throws Exception {`
+
+    `Set result = new HashSet();`
+    `while (rs.next()) {`
+
+        `DomainObject newObj = (DomainObject) dataMap.getDomainClass().newInstance();`
+        `newObj = load(rs);`
+
+        `result.add(newObj);`
+    `}`
+
+    `return result;`
+`}`
+</code></pre>
+
+<p><code>}</code></p>
+
+<p><code>public class PersonMapper  extends Mapper{</code>
+    <code>DataMap dataMap;</code></p>
+
+<pre><code>`protected void loadDataMap() {`
+
+    `dataMap = new DataMap(Person.class, "people");`
+    `dataMap.addColumn("lastname", "varchar", "lastName");`
+    `dataMap.addColumn("firstname", "varchar", "firstName");`
+    `dataMap.addColumn("number_of_dependents", "int", "numberOfDependents");`
+`}`
+
+`public Person find(Long key) {`
+    `return (Person) findObject(key);`
+`}`
+
+`public Set findLastNamesLike(String pattern) {`
+    `String sql  = "SELECT" + dataMap.columnList()`
+                `+ "    FROM" + dataMap.getTableName()`
+                `+ "    WHERE UPPER(lastName) like UPPER(?)";`
+    `PreparedStatement stmt = null;`
+
+    `ResultSet rs = null;`
+    `try {`
+
+        `stmt = DB.prepare(sql);`
+        `stmt.setString(1, pattern);`
+        `rs = stmt.executeQuery();`
+        `return loadAll(rs);`
+
+    `} catch (Exception e) {`
+        `System.out.println("erro: "+e.getMessage());`
+    `} finally {`
+        `DB.cleanUp(stmt, rs);`
+    `}`
+    `return null;`
+`}`
+</code></pre>
+
+<p><code>}</code></p>
+
+<p><code>public class DB {</code></p>
+
+<pre><code>`public static PreparedStatement prepare( String sql) throws SQLException {`
+    `Connection conexao = ConectaPostgreSQL.geraConexao();`
+    `return conexao.prepareStatement(sql);`
+`}`
+
+`public static void cleanUp(PreparedStatement stmt, ResultSet rs)  {`
+
+    `try{`
+    `rs.close();`
+    `stmt.close();`
+    `}`
+    `catch(Exception e){`
+        `System.out.println("Erro:" + e.getMessage());`
+    `}`
+`}`
+
+`public static void cleanUp(PreparedStatement stmt) {`
+    `try {`
+        `stmt.close();`
+    `} catch (SQLException ex) {`
+        `Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);`
+    `}`
+`}`
+</code></pre>
+
+<p><code>}</code></p>
 
 <h1>
 <a id="query-object-objeto-de-pesquisa" class="anchor" href="#query-object-objeto-de-pesquisa" aria-hidden="true"><span class="octicon octicon-link"></span></a>Query Object (Objeto de Pesquisa)</h1>
