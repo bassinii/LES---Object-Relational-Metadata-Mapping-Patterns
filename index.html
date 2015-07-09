@@ -95,6 +95,10 @@ Atualmente XML é uma escolha popular, pois proporciona estruturação hierárqu
 <h2>
 <a id="exemplo" class="anchor" href="#exemplo" aria-hidden="true"><span class="octicon octicon-link"></span></a>Exemplo:</h2>
 
+<ul>
+<li>Classe que representa uma classe de domínio:</li>
+</ul>
+
 <p><code>public class DomainObject {</code></p>
 
 <pre><code>`private Long ID;`
@@ -108,6 +112,10 @@ Atualmente XML é uma escolha popular, pois proporciona estruturação hierárqu
 
 <p><code>}</code></p>
 
+<ul>
+<li>Classe que representa uma pessoa que vai ser mapeada pra uma tabela no banco de dados:</li>
+</ul>
+
 <p><code>public class Person  extends DomainObject{</code></p>
 
 <pre><code>`private String lastname;`
@@ -116,6 +124,10 @@ Atualmente XML é uma escolha popular, pois proporciona estruturação hierárqu
 </code></pre>
 
 <p><code>}</code></p>
+
+<ul>
+<li>O mapa de dados contém uma coleção de mapas de colunas que mapeiam colunas na tabela de campos:</li>
+</ul>
 
 <p><code>public class DataMap {</code></p>
 
@@ -183,6 +195,10 @@ Atualmente XML é uma escolha popular, pois proporciona estruturação hierárqu
 
 <p><code>}</code></p>
 
+<ul>
+<li>O mapa de coluna faz o mapeamento entre um atributo de um objeto e um campo na tabela do banco:</li>
+</ul>
+
 <p><code>public class ColumnMap {</code></p>
 
 <pre><code>`private String columnName;`
@@ -233,10 +249,13 @@ Atualmente XML é uma escolha popular, pois proporciona estruturação hierárqu
 
 <p><code>}</code></p>
 
+<ul>
+<li>O mapeador é a classe que faz a integração com o banco propriamente dito:</li>
+</ul>
+
 <p><code>public class Mapper {</code></p>
 
-<pre><code>`//private UnitOfWork uow;`
-`protected DataMap dataMap;`
+<pre><code>`protected DataMap dataMap;`
 
 `public Object findObject(Long key) {`
 
@@ -383,6 +402,10 @@ Atualmente XML é uma escolha popular, pois proporciona estruturação hierárqu
 
 <p><code>}</code></p>
 
+<ul>
+<li>o mapeador de pessoas faz integração com o banco para um tipo de dado especifico:</li>
+</ul>
+
 <p><code>public class PersonMapper  extends Mapper{</code>
     <code>DataMap dataMap;</code></p>
 
@@ -422,6 +445,10 @@ Atualmente XML é uma escolha popular, pois proporciona estruturação hierárqu
 </code></pre>
 
 <p><code>}</code></p>
+
+<ul>
+<li>A classe DB cria uma conexão com o banco para a aplicação:</li>
+</ul>
 
 <p><code>public class DB {</code></p>
 
@@ -502,6 +529,10 @@ Outra abordagem é para detectar consultas que são casos particulares de outras
 <h2>
 <a id="exemplo-1" class="anchor" href="#exemplo-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Exemplo:</h2>
 
+<ul>
+<li>A classe define critérios para o objeto de consulta:</li>
+</ul>
+
 <p>public class Criteria {</p>
 
 <pre><code>private String sqlOperator;
@@ -528,6 +559,10 @@ public String generateSql(DataMap dataMap) throws Exception {
 </code></pre>
 
 <p>}</p>
+
+<ul>
+<li>Abaixo segue a representação de um objeto de pesquisa:</li>
+</ul>
 
 <p><code>public class QueryObject {</code></p>
 
